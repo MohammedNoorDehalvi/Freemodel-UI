@@ -13,10 +13,10 @@ interface SoundTrack {
 }
 
 const TRACKS: SoundTrack[] = [
-  { id: "rain", name: "Soft Raindrops", desc: "Gentle patter on liquid glass", icon: CloudRain, color: "from-blue-500/20 to-teal-500/20", type: "rain" },
-  { id: "waves", name: "Ocean Swells", desc: "Slow rhythmic tide roll", icon: Waves, color: "from-indigo-500/20 to-cyan-500/20", type: "waves" },
-  { id: "forest", name: "Night Forest", desc: "Soothing nocturnal whispers", icon: Trees, color: "from-emerald-500/20 to-teal-500/20", type: "forest" },
-  { id: "drone", name: "432 Hz Calm Drone", desc: "Harmonic restorative tone", icon: Sparkles, color: "from-violet-500/20 to-purple-500/20", type: "drone" },
+  { id: "rain", name: "Soft Raindrops", desc: "Gentle patter on liquid glass", icon: CloudRain, color: "from-blue-100 to-teal-100", type: "rain" },
+  { id: "waves", name: "Ocean Swells", desc: "Slow rhythmic tide roll", icon: Waves, color: "from-indigo-100 to-cyan-100", type: "waves" },
+  { id: "forest", name: "Night Forest", desc: "Soothing nocturnal whispers", icon: Trees, color: "from-emerald-100 to-teal-100", type: "forest" },
+  { id: "drone", name: "432 Hz Calm Drone", desc: "Harmonic restorative tone", icon: Sparkles, color: "from-violet-100 to-purple-100", type: "drone" },
 ];
 
 export function SoundscapePlayer() {
@@ -154,25 +154,25 @@ export function SoundscapePlayer() {
   }, []);
 
   return (
-    <div className="w-full liquid-glass rounded-3xl p-8 border border-white/15 shadow-2xl flex flex-col gap-6">
+    <div className="w-full liquid-glass rounded-3xl p-8 border border-black/10 shadow-2xl flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700">
             <Disc className={`w-5 h-5 ${activeTrack ? "animate-spin" : ""}`} />
           </div>
           <div>
-            <h3 className="font-display font-bold text-xl text-white">Ambient Soundscapes</h3>
-            <p className="text-xs text-slate-300">Generative procedural audio for focus & calm</p>
+            <h3 className="font-display font-bold text-xl text-slate-900">Ambient Soundscapes</h3>
+            <p className="text-xs text-slate-600">Generative procedural audio for focus & calm</p>
           </div>
         </div>
 
         {/* Volume Controls */}
-        <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+        <div className="flex items-center gap-3 bg-black/5 px-4 py-2 rounded-full border border-black/10">
           <button
             onClick={() => setIsMuted(!isMuted)}
-            className="text-slate-300 hover:text-white transition-colors"
+            className="text-slate-600 hover:text-slate-900 transition-colors"
           >
-            {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-teal-300" />}
+            {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 text-rose-600" /> : <Volume2 className="w-4 h-4 text-teal-600" />}
           </button>
           <input
             type="range"
@@ -200,23 +200,23 @@ export function SoundscapePlayer() {
               onClick={() => playTrack(track)}
               className={`p-5 rounded-2xl border transition-all text-left flex items-center justify-between group ${
                 isPlaying
-                  ? "bg-gradient-to-r " + track.color + " border-white/30 shadow-lg shadow-indigo-500/20"
-                  : "bg-white/5 hover:bg-white/10 border-white/10"
+                  ? "bg-gradient-to-r " + track.color + " border-black/20 shadow-lg shadow-indigo-500/10"
+                  : "bg-black/5 hover:bg-black/10 border-black/10"
               }`}
             >
               <div className="flex items-center gap-3.5">
-                <div className={`p-3 rounded-xl ${isPlaying ? "bg-white/20 text-white" : "bg-white/5 text-slate-300"}`}>
+                <div className={`p-3 rounded-xl ${isPlaying ? "bg-white/50 text-slate-900 border border-black/5" : "bg-white/50 text-slate-600 border border-black/5"}`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-display font-semibold text-sm text-white group-hover:text-violet-300 transition-colors">
+                  <h4 className="font-display font-semibold text-sm text-slate-900 group-hover:text-violet-700 transition-colors">
                     {track.name}
                   </h4>
-                  <p className="text-xs text-slate-400">{track.desc}</p>
+                  <p className="text-xs text-slate-500">{track.desc}</p>
                 </div>
               </div>
 
-              <div className={`p-2.5 rounded-full ${isPlaying ? "bg-white text-slate-900" : "bg-white/10 text-slate-300"}`}>
+              <div className={`p-2.5 rounded-full ${isPlaying ? "bg-slate-900 text-white" : "bg-black/10 text-slate-600"}`}>
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
               </div>
             </button>

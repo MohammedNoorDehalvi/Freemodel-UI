@@ -31,20 +31,20 @@ export function ThoughtVaporizer() {
   };
 
   return (
-    <div className="w-full liquid-glass rounded-3xl p-8 border border-white/15 shadow-2xl flex flex-col gap-6 relative overflow-hidden">
+    <div className="w-full liquid-glass rounded-3xl p-8 border border-black/10 shadow-2xl flex flex-col gap-6 relative overflow-hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-400/30 flex items-center justify-center text-rose-300">
+          <div className="w-10 h-10 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-700">
             <Flame className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-display font-bold text-xl text-white">Thought Vaporizer</h3>
-            <p className="text-xs text-slate-300">Write down what&apos;s weighing on you and watch it dissolve into light.</p>
+            <h3 className="font-display font-bold text-xl text-slate-900">Thought Vaporizer</h3>
+            <p className="text-xs text-slate-600">Write down what&apos;s weighing on you and watch it dissolve into light.</p>
           </div>
         </div>
 
         {vaporizedCount > 0 && (
-          <div className="flex items-center gap-1.5 text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1.5 rounded-full font-medium">
+          <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-100 border border-emerald-200 px-3.5 py-1.5 rounded-full font-medium">
             <CheckCircle2 className="w-3.5 h-3.5" />
             <span>{vaporizedCount} thought{vaporizedCount > 1 ? "s" : ""} released</span>
           </div>
@@ -60,11 +60,11 @@ export function ThoughtVaporizer() {
               initial={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               animate={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="absolute inset-0 bg-gradient-to-r from-violet-600/40 via-pink-500/40 to-teal-400/40 rounded-2xl p-6 flex items-center justify-center border border-white/30 backdrop-blur-2xl text-center"
+              className="absolute inset-0 bg-gradient-to-r from-violet-600/40 via-pink-500/40 to-teal-400/40 rounded-2xl p-6 flex items-center justify-center border border-black/20 backdrop-blur-2xl text-center"
             >
               <div className="flex flex-col items-center gap-2">
-                <Sparkles className="w-8 h-8 text-violet-200 animate-spin" />
-                <span className="font-display font-bold text-lg text-white">Vaporizing into stardust...</span>
+                <Sparkles className="w-8 h-8 text-violet-700 animate-spin" />
+                <span className="font-display font-bold text-lg text-slate-900">Vaporizing into stardust...</span>
               </div>
             </motion.div>
           ) : (
@@ -79,7 +79,7 @@ export function ThoughtVaporizer() {
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-[11px] text-slate-400">
+        <p className="text-[11px] text-slate-500">
           🔒 Nothing is stored on any server. Disappears permanently.
         </p>
 

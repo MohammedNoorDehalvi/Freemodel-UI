@@ -64,19 +64,19 @@ export function BreathingGuide() {
   const currentInfo = PHASES[phase];
 
   return (
-    <div className="w-full liquid-glass rounded-3xl p-8 border border-white/15 shadow-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+    <div className="w-full liquid-glass rounded-3xl p-8 border border-black/10 shadow-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
       {/* Background Subtle Gradient Glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-teal-500/5 via-transparent to-violet-500/5 pointer-events-none" />
 
-      <div className="flex items-center gap-2 text-teal-300 bg-teal-500/10 border border-teal-500/20 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
+      <div className="flex items-center gap-2 text-teal-700 bg-teal-100 border border-teal-200 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
         <Wind className="w-4 h-4" />
         <span>4-7-8 Breathing Aid</span>
       </div>
 
-      <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-2">
+      <h3 className="font-display font-bold text-2xl md:text-3xl text-slate-900 mb-2">
         Find Your Calm Rhythm
       </h3>
-      <p className="text-xs md:text-sm text-slate-300 max-w-md mb-10 leading-relaxed">
+      <p className="text-xs md:text-sm text-slate-600 max-w-md mb-10 leading-relaxed">
         Slowing down your breath activates your body&apos;s natural relaxation response in under 2 minutes.
       </p>
 
@@ -96,13 +96,13 @@ export function BreathingGuide() {
         <motion.div
           animate={{ scale: currentInfo.scale }}
           transition={{ duration: currentInfo.duration || 1, ease: "easeInOut" }}
-          className="w-48 h-48 rounded-full liquid-glass-glow border-2 border-white/30 flex flex-col items-center justify-center p-6 shadow-2xl z-10"
+          className="w-48 h-48 rounded-full liquid-glass-glow border-2 border-black/10 flex flex-col items-center justify-center p-6 shadow-2xl z-10"
         >
-          <span className="font-display font-extrabold text-2xl text-white uppercase tracking-wider mb-1">
+          <span className="font-display font-extrabold text-2xl text-slate-900 uppercase tracking-wider mb-1">
             {currentInfo.name}
           </span>
           {isActive && (
-            <span className="font-display font-black text-4xl text-teal-300">
+            <span className="font-display font-black text-4xl text-teal-600">
               {timeLeft}s
             </span>
           )}
@@ -111,7 +111,7 @@ export function BreathingGuide() {
 
       {/* Dynamic Instruction */}
       <div className="min-h-[48px] flex items-center justify-center mb-8 px-4">
-        <p className="text-sm font-medium text-slate-200 bg-white/5 border border-white/10 px-5 py-2.5 rounded-2xl backdrop-blur-md">
+        <p className="text-sm font-medium text-slate-800 bg-black/5 border border-black/10 px-5 py-2.5 rounded-2xl backdrop-blur-md">
           {currentInfo.instruction}
         </p>
       </div>
@@ -122,7 +122,7 @@ export function BreathingGuide() {
           onClick={toggleBreathing}
           className={`flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-xs uppercase tracking-wider transition-all shadow-lg ${
             isActive
-              ? "bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-500/40"
+              ? "bg-rose-100 hover:bg-rose-200 text-rose-700 border border-rose-300"
               : "bg-gradient-to-r from-teal-500 to-indigo-600 hover:scale-105 text-white shadow-teal-500/20"
           }`}
         >
@@ -138,8 +138,8 @@ export function BreathingGuide() {
         </button>
 
         {cycles > 0 && (
-          <div className="text-xs text-slate-400 font-medium bg-white/5 px-4 py-3 rounded-full border border-white/10">
-            Completed: <span className="text-teal-300 font-bold">{cycles}</span> cycle{cycles > 1 ? "s" : ""}
+          <div className="text-xs text-slate-600 font-medium bg-black/5 px-4 py-3 rounded-full border border-black/10">
+            Completed: <span className="text-teal-700 font-bold">{cycles}</span> cycle{cycles > 1 ? "s" : ""}
           </div>
         )}
       </div>

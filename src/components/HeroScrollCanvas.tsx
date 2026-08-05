@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, HeartHandshake, ShieldCheck, ArrowDown, Wind } from "lucide-react";
+import { ArrowDown, ShieldCheck, Sparkles, HeartHandshake, Wind } from "lucide-react";
+import { InteractiveButton } from "./ui/InteractiveButton";
+import { TextWaveAnimation } from "./ui/TextWaveAnimation";
+import { GlassEffectCard } from "./ui/GlassEffectCard";
 
 const TOTAL_FRAMES = 300;
 
@@ -28,7 +31,6 @@ export function HeroScrollCanvas() {
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
       const frameNum = String(i).padStart(3, "0");
-      img.src = `/frames/ezgif-frame-${frameNum}.jpg`;
       const handleLoad = () => {
         loadedCount++;
         setLoadProgress(Math.floor((loadedCount / TOTAL_FRAMES) * 100));
@@ -42,9 +44,19 @@ export function HeroScrollCanvas() {
         console.error(`Failed to load frame ${frameNum}`);
         handleLoad();
       };
+      img.src = `/frames/ezgif-frame-${frameNum}.jpg`;
       imgs.push(img);
     }
     imagesRef.current = imgs;
+    
+    // Fallback: If network is slow or cache hangs, force start after 3.5 seconds
+    const timeoutId = setTimeout(() => {
+      if (loadedCount < TOTAL_FRAMES) {
+        setImagesLoaded(true);
+      }
+    }, 3500);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Render canvas frame based on scroll index
@@ -89,9 +101,11 @@ export function HeroScrollCanvas() {
   // Subscribe to scroll changes
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
+      // Offset by 40 frames to start with the image a bit scrolled up as requested
+      const START_FRAME = 40;
       const frameIndex = Math.min(
         TOTAL_FRAMES - 1,
-        Math.max(0, Math.floor(latest * TOTAL_FRAMES))
+        Math.max(0, START_FRAME + Math.floor(latest * (TOTAL_FRAMES - 1 - START_FRAME)))
       );
       if (frameIndex !== currentFrameRef.current) {
         currentFrameRef.current = frameIndex;
@@ -115,34 +129,42 @@ export function HeroScrollCanvas() {
   }, [imagesLoaded]);
 
   // Narrative Story beats matching scroll ranges
-  const beat1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.22, 0.28], [0, 1, 1, 0]);
-  const beat1X = useTransform(scrollYProgress, [0, 0.05, 0.22, 0.28], ["5%", "0%", "0%", "-5%"]);
+  const [activeBeat, setActiveBeat] = useState(1);
+  
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 0.28) setActiveBeat(1);
+    else if (latest >= 0.28 && latest < 0.53) setActiveBeat(2);
+    else if (latest >= 0.53 && latest < 0.78) setActiveBeat(3);
+    else setActiveBeat(4);
+  });
 
-  const beat2Opacity = useTransform(scrollYProgress, [0.28, 0.33, 0.48, 0.53], [0, 1, 1, 0]);
-  const beat2X = useTransform(scrollYProgress, [0.28, 0.33, 0.48, 0.53], ["5%", "0%", "0%", "-5%"]);
+  const beat1Opacity = useTransform(scrollYProgress, [0, 0.22, 0.28, 1], [1, 1, 0, 0]);
+  const beat1X = useTransform(scrollYProgress, [0, 0.22, 0.28, 1], ["0%", "0%", "-5%", "-5%"]);
 
-  const beat3Opacity = useTransform(scrollYProgress, [0.53, 0.58, 0.73, 0.78], [0, 1, 1, 0]);
-  const beat3X = useTransform(scrollYProgress, [0.53, 0.58, 0.73, 0.78], ["-5%", "0%", "0%", "5%"]);
+  const beat2Opacity = useTransform(scrollYProgress, [0, 0.28, 0.33, 0.48, 0.53, 1], [0, 0, 1, 1, 0, 0]);
+  const beat2X = useTransform(scrollYProgress, [0, 0.28, 0.33, 0.48, 0.53, 1], ["5%", "5%", "0%", "0%", "-5%", "-5%"]);
 
-  const beat4Opacity = useTransform(scrollYProgress, [0.78, 0.83, 0.98, 1], [0, 1, 1, 1]);
-  const beat4Y = useTransform(scrollYProgress, [0.78, 0.83], ["10%", "0%"]);
+  const beat3Opacity = useTransform(scrollYProgress, [0, 0.53, 0.58, 0.73, 0.78, 1], [0, 0, 1, 1, 0, 0]);
+  const beat3X = useTransform(scrollYProgress, [0, 0.53, 0.58, 0.73, 0.78, 1], ["-5%", "-5%", "0%", "0%", "5%", "5%"]);
+
+  const beat4Opacity = useTransform(scrollYProgress, [0, 0.78, 0.83, 0.98, 1], [0, 0, 1, 1, 1]);
+  const beat4Y = useTransform(scrollYProgress, [0, 0.78, 0.83, 1], ["10%", "10%", "0%", "0%"]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400vh] bg-slate-950">
+    <div ref={containerRef} className="relative w-full h-[400vh]">
       {/* Sticky Canvas & Text Overlay Container */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
         {/* Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 opacity-80" />
 
-        {/* Ambient Dark Overlay to make glass text readable */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/70 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-vignette z-10 pointer-events-none" />
+        {/* Ambient Overlay to ensure text readability without hiding frames */}
+        <div className="absolute inset-0 bg-slate-900/10 mix-blend-multiply z-10 pointer-events-none" />
 
         {/* Loading Indicator */}
         {!imagesLoaded && (
-          <div className="absolute z-40 inset-0 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-xl">
-            <div className="w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-violet-400 animate-spin mb-4" />
-            <p className="text-sm font-display text-violet-200">Loading 3D Visual Experience ({loadProgress}%)...</p>
+          <div className="absolute z-40 inset-0 flex flex-col items-center justify-center bg-slate-50/90 backdrop-blur-xl">
+            <div className="w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-violet-600 animate-spin mb-4" />
+            <p className="text-sm font-display text-violet-700">Loading 3D Visual Experience ({loadProgress}%)...</p>
           </div>
         )}
 
@@ -151,105 +173,108 @@ export function HeroScrollCanvas() {
           
           {/* BEAT 1 (0% - 25% Scroll) */}
           <motion.div
-            style={{ opacity: beat1Opacity, x: beat1X }}
-            className="absolute inset-0 flex items-center justify-end px-6"
+            style={{ opacity: beat1Opacity, x: beat1X, pointerEvents: activeBeat === 1 ? 'auto' : 'none' }}
+            className="absolute inset-0 flex items-center justify-end px-4 sm:px-6"
           >
-            <div className="liquid-glass-glow p-8 md:p-12 rounded-3xl backdrop-blur-2xl border border-white/20 shadow-2xl max-w-xl pointer-events-auto w-full">
-              <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-rose-500/10 text-rose-300 border border-rose-500/20 uppercase tracking-widest mb-6 inline-block">
+            <GlassEffectCard className="liquid-glass-glow max-w-lg w-full">
+              <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200 uppercase tracking-widest mb-4 inline-block">
                 The Overwhelming Noise
               </span>
-              <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-5">
-                Drowning in <br/><span className="text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.4)]">Expectations.</span>
+              <h1 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900 tracking-tight leading-tight mb-4">
+                <TextWaveAnimation text="Drowning in" duration={0.8} />
+                <span className="text-rose-600 drop-shadow-sm">
+                  <TextWaveAnimation text="Expectations." delay={0.4} duration={0.8} />
+                </span>
               </h1>
-              <p className="text-sm md:text-base lg:text-lg text-slate-300 leading-relaxed mb-8">
+              <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
                 The pressure to be perfect, the weight of unsaid words, the late nights staring at the ceiling. You don't have to carry this heavy world entirely alone.
               </p>
-              <div className="flex items-center gap-3 text-xs text-rose-300 font-medium">
+              <div className="flex items-center gap-2 text-xs text-rose-600 font-medium">
                 <ArrowDown className="w-4 h-4 animate-bounce" />
                 <span>Scroll down to step into a safe space...</span>
               </div>
-            </div>
+            </GlassEffectCard>
           </motion.div>
 
           {/* BEAT 2 (28% - 53% Scroll) */}
           <motion.div
-            style={{ opacity: beat2Opacity, x: beat2X }}
-            className="absolute inset-0 flex items-center justify-center md:justify-end px-6 md:pr-12"
+            style={{ opacity: beat2Opacity, x: beat2X, pointerEvents: activeBeat === 2 ? 'auto' : 'none' }}
+            className="absolute inset-0 flex items-center justify-center md:justify-end px-4 sm:px-6 md:pr-12"
           >
-            <div className="liquid-glass-glow p-8 md:p-12 rounded-3xl backdrop-blur-2xl border border-white/20 shadow-2xl max-w-xl pointer-events-auto w-full">
-              <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-violet-500/10 text-violet-300 border border-violet-500/20 uppercase tracking-widest mb-6 inline-block">
+            <GlassEffectCard className="liquid-glass-glow max-w-lg w-full">
+              <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-violet-100 text-violet-700 border border-violet-200 uppercase tracking-widest mb-4 inline-block">
                 A Safe Harbor
               </span>
-              <h2 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-5">
-                Breathe out the <br/><span className="text-violet-400 drop-shadow-[0_0_15px_rgba(167,139,250,0.4)]">Chaos.</span>
+              <h2 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900 tracking-tight leading-tight mb-4">
+                <TextWaveAnimation text="Breathe out the" duration={0.8} />
+                <span className="text-violet-600 drop-shadow-sm">
+                  <TextWaveAnimation text="Chaos." delay={0.4} duration={0.8} />
+                </span>
               </h2>
-              <p className="text-sm md:text-base lg:text-lg text-slate-300 leading-relaxed mb-8">
+              <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
                 TeenTalk is your completely private, judgment-free sanctuary. A quiet place to untangle your messy thoughts, let your guard down, and just be yourself.
               </p>
-              <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20">
+              <div className="flex items-center gap-2 text-xs text-emerald-700 font-medium bg-emerald-100 p-2.5 rounded-xl border border-emerald-200">
                 <ShieldCheck className="w-4 h-4 shrink-0" />
                 <span>100% Anonymous & Zero Data Tracking</span>
               </div>
-            </div>
+            </GlassEffectCard>
           </motion.div>
 
           {/* BEAT 3 (53% - 78% Scroll) */}
           <motion.div
-            style={{ opacity: beat3Opacity, x: beat3X }}
-            className="absolute inset-0 flex items-center justify-start px-6"
+            style={{ opacity: beat3Opacity, x: beat3X, pointerEvents: activeBeat === 3 ? 'auto' : 'none' }}
+            className="absolute inset-0 flex items-center justify-start px-4 sm:px-6"
           >
-            <div className="liquid-glass-glow p-8 md:p-12 rounded-3xl backdrop-blur-2xl border border-white/20 shadow-2xl max-w-xl pointer-events-auto w-full">
-              <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-teal-500/10 text-teal-300 border border-teal-500/20 uppercase tracking-widest mb-6 inline-block">
+            <GlassEffectCard className="liquid-glass-glow max-w-lg w-full">
+              <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-teal-100 text-teal-700 border border-teal-200 uppercase tracking-widest mb-4 inline-block">
                 Gentle Guidance
               </span>
-              <h2 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-5">
-                Someone who <br/><span className="text-teal-400 drop-shadow-[0_0_15px_rgba(45,212,191,0.4)]">Listens.</span>
+              <h2 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900 tracking-tight leading-tight mb-4">
+                <TextWaveAnimation text="Someone who" duration={0.8} />
+                <span className="text-teal-600 drop-shadow-sm">
+                  <TextWaveAnimation text="Listens." delay={0.4} duration={0.8} />
+                </span>
               </h2>
-              <p className="text-sm md:text-base lg:text-lg text-slate-300 leading-relaxed mb-8">
+              <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
                 Meet Spark, an empathetic AI companion. Pour your heart out anonymously, and receive warm, CBT-backed support and grounding techniques whenever you need them most.
               </p>
-              <Link
-                href="/chat"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs font-bold bg-violet-600 hover:bg-violet-500 text-white shadow-xl shadow-violet-600/30 transition-all hover:scale-105"
-              >
+              <InteractiveButton href="/chat" variant="primary">
                 <Sparkles className="w-4 h-4" />
                 <span>Start Talking to Spark</span>
-              </Link>
-            </div>
+              </InteractiveButton>
+            </GlassEffectCard>
           </motion.div>
 
           {/* BEAT 4 (78% - 100% Scroll Final Hook) */}
           <motion.div
-            style={{ opacity: beat4Opacity, y: beat4Y }}
-            className="absolute inset-0 flex items-center justify-center px-6"
+            style={{ opacity: beat4Opacity, y: beat4Y, pointerEvents: activeBeat === 4 ? 'auto' : 'none' }}
+            className="absolute inset-0 flex items-center justify-center px-4 sm:px-6"
           >
-            <div className="liquid-glass-glow p-8 md:p-14 rounded-3xl backdrop-blur-2xl border border-white/20 shadow-2xl max-w-3xl text-center pointer-events-auto w-full flex flex-col items-center">
-              <span className="px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-white/10 border border-white/10 text-white uppercase tracking-wider mb-6 shadow-lg backdrop-blur-md">
+            <GlassEffectCard className="liquid-glass-glow max-w-2xl text-center w-full flex flex-col items-center">
+              <span className="px-4 py-1.5 rounded-full text-[10px] font-bold bg-black/5 border border-black/10 text-slate-600 uppercase tracking-wider mb-4 shadow-sm backdrop-blur-md">
                 Your Sanctuary Awaits
               </span>
-              <h2 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-6">
-                Reclaim your <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-indigo-400 to-violet-400 drop-shadow-sm">Peace of Mind.</span>
+              <h2 className="font-display font-black text-3xl md:text-4xl lg:text-5xl text-slate-900 tracking-tight leading-tight mb-4 flex flex-wrap justify-center">
+                <TextWaveAnimation text="Reclaim your" duration={0.8} className="justify-center w-full" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 via-indigo-500 to-violet-500 block mt-1">
+                  <TextWaveAnimation text="Peace of Mind." delay={0.4} duration={0.8} className="justify-center" />
+                </span>
               </h2>
-              <p className="text-sm md:text-base lg:text-xl text-slate-300 max-w-2xl leading-relaxed mb-10">
+              <p className="text-sm md:text-base text-slate-600 max-w-lg leading-relaxed mb-8">
                 You deserve a space to heal. Track your true feelings, practice calming exercises, and let go of the anxiety holding you back today.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                <Link
-                  href="/chat"
-                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full font-display font-bold text-sm bg-gradient-to-r from-violet-600 via-indigo-600 to-teal-500 text-white shadow-2xl shadow-violet-600/30 hover:scale-105 transition-all"
-                >
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+                <InteractiveButton href="/chat" variant="primary">
                   <HeartHandshake className="w-4 h-4" />
                   <span>Enter Spark Chat</span>
-                </Link>
-                <Link
-                  href="/calm"
-                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full font-display font-semibold text-sm bg-white/10 hover:bg-white/20 border border-white/15 text-white backdrop-blur-md transition-all"
-                >
-                  <Wind className="w-4 h-4 text-teal-300" />
+                </InteractiveButton>
+                <InteractiveButton href="/calm" variant="secondary">
+                  <Wind className="w-4 h-4 text-teal-600" />
                   <span>Explore Calm Tools</span>
-                </Link>
+                </InteractiveButton>
               </div>
-            </div>
+            </GlassEffectCard>
           </motion.div>
 
         </div>

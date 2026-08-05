@@ -15,11 +15,11 @@ interface MoodEntry {
 }
 
 const MOOD_OPTIONS = [
-  { label: "Great", emoji: "✨", level: 5, color: "from-emerald-500/30 to-teal-500/30 border-emerald-400/40 text-emerald-300" },
-  { label: "Chill", emoji: "😌", level: 4, color: "from-blue-500/30 to-cyan-500/30 border-blue-400/40 text-blue-300" },
-  { label: "Meh", emoji: "😐", level: 3, color: "from-slate-500/30 to-gray-500/30 border-slate-400/40 text-slate-300" },
-  { label: "Stressed", emoji: "😰", level: 2, color: "from-amber-500/30 to-orange-500/30 border-amber-400/40 text-amber-300" },
-  { label: "Overwhelmed", emoji: "🌧️", level: 1, color: "from-rose-500/30 to-violet-500/30 border-rose-400/40 text-rose-300" },
+  { label: "Great", emoji: "✨", level: 5, color: "from-emerald-100 to-teal-100 border-emerald-200 text-emerald-700" },
+  { label: "Chill", emoji: "😌", level: 4, color: "from-blue-100 to-cyan-100 border-blue-200 text-blue-700" },
+  { label: "Meh", emoji: "😐", level: 3, color: "from-slate-100 to-gray-100 border-slate-200 text-slate-700" },
+  { label: "Stressed", emoji: "😰", level: 2, color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700" },
+  { label: "Overwhelmed", emoji: "🌧️", level: 1, color: "from-rose-100 to-violet-100 border-rose-200 text-rose-700" },
 ];
 
 const TRIGGER_TAGS = ["School", "Friends", "Family", "Sleep", "Social Media", "Exams", "Health", "Future"];
@@ -85,45 +85,45 @@ export function MoodTracker() {
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
       {/* Top Stats Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="liquid-glass rounded-3xl p-6 border border-white/15 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-violet-600/20 border border-violet-400/30 flex items-center justify-center text-violet-300">
+        <div className="liquid-glass rounded-3xl p-6 border border-black/10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-violet-100 border border-violet-200 flex items-center justify-center text-violet-600">
             <Flame className="w-6 h-6 animate-pulse" />
           </div>
           <div>
-            <h4 className="text-2xl font-display font-bold text-white">{streakDays} Check-ins</h4>
-            <p className="text-xs text-slate-400">Total Vibe Logs Recorded</p>
+            <h4 className="text-2xl font-display font-bold text-slate-900">{streakDays} Check-ins</h4>
+            <p className="text-xs text-slate-600">Total Vibe Logs Recorded</p>
           </div>
         </div>
 
-        <div className="liquid-glass rounded-3xl p-6 border border-white/15 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-teal-600/20 border border-teal-400/30 flex items-center justify-center text-teal-300">
+        <div className="liquid-glass rounded-3xl p-6 border border-black/10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-teal-100 border border-teal-200 flex items-center justify-center text-teal-600">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-2xl font-display font-bold text-white">Local Vault</h4>
-            <p className="text-xs text-slate-400">Zero Server Data Transfer</p>
+            <h4 className="text-2xl font-display font-bold text-slate-900">Local Vault</h4>
+            <p className="text-xs text-slate-600">Zero Server Data Transfer</p>
           </div>
         </div>
 
-        <div className="liquid-glass rounded-3xl p-6 border border-white/15 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300">
+        <div className="liquid-glass rounded-3xl p-6 border border-black/10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600">
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-2xl font-display font-bold text-white">
+            <h4 className="text-2xl font-display font-bold text-slate-900">
               {entries.length > 0 ? entries[0].emoji + " " + entries[0].mood : "No Logs Yet"}
             </h4>
-            <p className="text-xs text-slate-400">Latest Recorded Vibe</p>
+            <p className="text-xs text-slate-600">Latest Recorded Vibe</p>
           </div>
         </div>
       </div>
 
       {/* Log Mood Section */}
-      <div className="liquid-glass rounded-3xl p-8 border border-white/15 flex flex-col gap-6 shadow-2xl">
+      <div className="liquid-glass rounded-3xl p-8 border border-black/10 flex flex-col gap-6 shadow-2xl">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-display font-bold text-2xl text-white">How are you feeling right now?</h3>
-            <p className="text-xs text-slate-300">Select your current vibe to track emotional patterns over time.</p>
+            <h3 className="font-display font-bold text-2xl text-slate-900">How are you feeling right now?</h3>
+            <p className="text-xs text-slate-600">Select your current vibe to track emotional patterns over time.</p>
           </div>
         </div>
 
@@ -138,11 +138,11 @@ export function MoodTracker() {
                 className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 ${
                   isSelected
                     ? "bg-gradient-to-b " + option.color + " scale-105 shadow-xl"
-                    : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-300"
+                    : "bg-black/5 hover:bg-black/10 border-black/10 text-slate-600"
                 }`}
               >
                 <span className="text-3xl">{option.emoji}</span>
-                <span className="font-display font-bold text-xs text-white">{option.label}</span>
+                <span className={`font-display font-bold text-xs ${isSelected ? "text-slate-900" : "text-slate-600"}`}>{option.label}</span>
               </button>
             );
           })}
@@ -153,10 +153,10 @@ export function MoodTracker() {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="flex flex-col gap-4 border-t border-white/10 pt-6"
+            className="flex flex-col gap-4 border-t border-black/10 pt-6"
           >
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-2 block">
+              <label className="text-xs font-semibold text-slate-600 mb-2 block">
                 What influenced your vibe today? (Optional)
               </label>
               <div className="flex flex-wrap gap-2">
@@ -168,8 +168,8 @@ export function MoodTracker() {
                       onClick={() => toggleTrigger(tag)}
                       className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                         isTagged
-                          ? "bg-violet-600 text-white border border-violet-400"
-                          : "bg-white/5 hover:bg-white/10 text-slate-400 border border-white/10"
+                          ? "bg-violet-600 text-white border border-violet-600"
+                          : "bg-black/5 hover:bg-black/10 text-slate-600 border border-black/10"
                       }`}
                     >
                       {tag}
@@ -180,7 +180,7 @@ export function MoodTracker() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-2 block">
+              <label className="text-xs font-semibold text-slate-600 mb-2 block">
                 Add a private note (Optional)
               </label>
               <input
@@ -204,12 +204,12 @@ export function MoodTracker() {
       </div>
 
       {/* Mood History List */}
-      <div className="liquid-glass rounded-3xl p-8 border border-white/15 flex flex-col gap-6">
-        <h3 className="font-display font-bold text-xl text-white">Your Recent Vibe History</h3>
+      <div className="liquid-glass rounded-3xl p-8 border border-black/10 flex flex-col gap-6">
+        <h3 className="font-display font-bold text-xl text-slate-900">Your Recent Vibe History</h3>
 
         {entries.length === 0 ? (
-          <div className="text-center py-12 text-slate-400 text-sm">
-            <Smile className="w-12 h-12 mx-auto text-slate-600 mb-3" />
+          <div className="text-center py-12 text-slate-500 text-sm">
+            <Smile className="w-12 h-12 mx-auto text-slate-400 mb-3" />
             <p>No mood logs yet. Choose how you feel above to log your first vibe!</p>
           </div>
         ) : (
@@ -217,20 +217,20 @@ export function MoodTracker() {
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-4 hover:border-violet-400/30 transition-all"
+                className="p-4 rounded-2xl bg-black/5 border border-black/10 flex items-center justify-between gap-4 hover:border-violet-400/30 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl p-2 rounded-xl bg-white/5">{entry.emoji}</span>
+                  <span className="text-3xl p-2 rounded-xl bg-white/50 border border-black/5">{entry.emoji}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="font-display font-bold text-sm text-white">{entry.mood}</h4>
-                      <span className="text-[10px] text-slate-400">{entry.date}</span>
+                      <h4 className="font-display font-bold text-sm text-slate-900">{entry.mood}</h4>
+                      <span className="text-[10px] text-slate-500">{entry.date}</span>
                     </div>
-                    {entry.note && <p className="text-xs text-slate-300 mt-0.5">{entry.note}</p>}
+                    {entry.note && <p className="text-xs text-slate-600 mt-0.5">{entry.note}</p>}
                     {entry.triggers.length > 0 && (
                       <div className="flex gap-1.5 mt-2">
                         {entry.triggers.map((t) => (
-                          <span key={t} className="text-[10px] bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full border border-violet-400/20">
+                          <span key={t} className="text-[10px] bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full border border-violet-200">
                             {t}
                           </span>
                         ))}

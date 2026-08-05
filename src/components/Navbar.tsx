@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sparkles, ShieldAlert, HeartHandshake, Smile, Wind, Lock, Info, HelpCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { InteractiveButton } from "./ui/InteractiveButton";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -34,20 +35,20 @@ export function Navbar() {
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-indigo-500 to-teal-400 p-[1px] shadow-lg group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-slate-950/80 rounded-2xl flex items-center justify-center backdrop-blur-md">
-              <Sparkles className="w-5 h-5 text-violet-300 animate-pulse" />
+            <div className="w-full h-full bg-slate-50/90 rounded-2xl flex items-center justify-center backdrop-blur-md">
+              <Sparkles className="w-5 h-5 text-violet-600 animate-pulse" />
             </div>
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-xl tracking-tight text-white group-hover:text-violet-300 transition-colors">
-              Teen<span className="text-violet-400">Talk</span>
+            <span className="font-display font-bold text-xl tracking-tight text-slate-900 group-hover:text-violet-600 transition-colors">
+              Teen<span className="text-violet-600">Talk</span>
             </span>
-            <span className="text-[10px] text-violet-300/70 tracking-wider uppercase font-medium">Anonymous AI Companion</span>
+            <span className="text-[10px] text-violet-700/70 tracking-wider uppercase font-medium">Anonymous AI Companion</span>
           </div>
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 backdrop-blur-xl">
+        <nav className="hidden md:flex items-center gap-1 bg-black/5 border border-black/10 rounded-full px-4 py-1.5 backdrop-blur-xl">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -57,11 +58,11 @@ export function Navbar() {
                 href={link.href}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                   isActive
-                    ? "bg-violet-600/40 text-white border border-violet-400/40 shadow-inner"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
+                    ? "bg-violet-600/10 text-violet-800 border border-violet-400/30 shadow-inner"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-black/5"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-violet-300" : "text-slate-400"}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-violet-700" : "text-slate-500"}`} />
                 {link.name}
               </Link>
             );
@@ -70,21 +71,25 @@ export function Navbar() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2.5">
-          <Link
+          <InteractiveButton
             href="/crisis"
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30 hover:border-rose-400 transition-all shadow-sm"
+            variant="danger"
+            size="sm"
+            className="flex items-center gap-1.5"
           >
-            <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+            <ShieldAlert className="w-3.5 h-3.5" />
             <span>SOS Crisis</span>
-          </Link>
+          </InteractiveButton>
 
-          <Link
+          <InteractiveButton
             href="/chat"
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 hover:scale-[1.02] transition-all"
+            variant="primary"
+            size="sm"
+            className="hidden sm:flex items-center gap-1.5"
           >
             <span>Talk to Spark</span>
             <Sparkles className="w-3.5 h-3.5" />
-          </Link>
+          </InteractiveButton>
         </div>
       </div>
     </header>
