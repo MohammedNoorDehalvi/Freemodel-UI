@@ -90,7 +90,7 @@ export default function CrisisPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {CRISIS_RESOURCES.map((resource) => (
-            <CardContainer key={resource.id} className="w-full">
+            <CardContainer key={resource.title} className="w-full">
               <CardBody className="bg-white relative group/card dark:hover:shadow-2xl dark:hover:shadow-rose-500/[0.1] border-black/[0.1] w-full h-auto rounded-xl p-6 border liquid-glass">
                 <CardItem
                   translateZ="50"
