@@ -1,0 +1,5 @@
+.env.local
+frame.zip
+node_modules/
+frames/
+.next/
