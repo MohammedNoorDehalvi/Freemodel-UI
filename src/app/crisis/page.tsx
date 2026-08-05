@@ -50,21 +50,21 @@ export default function CrisisPage() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="w-full max-w-5xl relative z-10 flex flex-col gap-10">
-        
-      <LampContainer className="py-20 -mt-20 z-0">
-        <div className="text-center max-w-2xl mx-auto pt-10">
-          <div className="flex items-center justify-center gap-2 text-rose-700 bg-rose-100 border border-rose-200 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider w-fit mx-auto mb-3">
-            <ShieldAlert className="w-4 h-4 text-rose-600" />
-            <span>Immediate Help & Support</span>
+
+        <LampContainer className="py-20 -mt-20 z-0">
+          <div className="text-center max-w-2xl mx-auto pt-10">
+            <div className="flex items-center justify-center gap-2 text-rose-700 bg-rose-100 border border-rose-200 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider w-fit mx-auto mb-3">
+              <ShieldAlert className="w-4 h-4 text-rose-600" />
+              <span>Immediate Help & Support</span>
+            </div>
+            <h1 className="font-display font-extrabold text-3xl md:text-5xl text-slate-900 tracking-tight">
+              You Are Not Alone.
+            </h1>
+            <p className="text-sm md:text-base text-slate-600 mt-3 leading-relaxed">
+              If you are in immediate physical danger, feeling overwhelmed by self-harm thoughts, or in severe distress, please connect with these free, confidential, 24/7 resources right now.
+            </p>
           </div>
-          <h1 className="font-display font-extrabold text-3xl md:text-5xl text-slate-900 tracking-tight">
-            You Are Not Alone.
-          </h1>
-          <p className="text-sm md:text-base text-slate-600 mt-3 leading-relaxed">
-            If you are in immediate physical danger, feeling overwhelmed by self-harm thoughts, or in severe distress, please connect with these free, confidential, 24/7 resources right now.
-          </p>
-        </div>
-      </LampContainer>
+        </LampContainer>
 
         {/* SOS Grounding Mode Banner */}
         <div className="liquid-glass-glow p-8 rounded-3xl border border-rose-200 bg-rose-50 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
@@ -88,53 +88,53 @@ export default function CrisisPage() {
           </button>
         </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {CRISIS_RESOURCES.map((resource) => (
-              <CardContainer key={resource.id} className="w-full">
-                <CardBody className="bg-white relative group/card dark:hover:shadow-2xl dark:hover:shadow-rose-500/[0.1] border-black/[0.1] w-full h-auto rounded-xl p-6 border liquid-glass">
-                  <CardItem
-                    translateZ="50"
-                    className="flex items-center gap-3 mb-4 w-full justify-between"
-                  >
-                    <h3 className="font-display font-bold text-lg text-slate-900">{resource.title}</h3>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200 uppercase tracking-widest shrink-0">
-                      {resource.badge}
-                    </span>
-                  </CardItem>
-                  <CardItem
-                    as="p"
-                    translateZ="60"
-                    className="text-sm text-slate-600 mb-6 line-clamp-4"
-                  >
-                    {resource.desc}
-                  </CardItem>
-                  <CardItem
-                    translateZ="80"
-                    className="flex flex-col gap-3 w-full"
-                  >
-                    {resource.phone ? (
-                      <a
-                        href={`tel:${resource.phone}`}
-                        className="w-full py-3 rounded-full bg-slate-900 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
-                      >
-                        <PhoneCall className="w-4 h-4" />
-                        Call {resource.phone}
-                      </a>
-                    ) : null}
-                    {resource.sms ? (
-                      <a
-                        href={`sms:${resource.sms}`}
-                        className="w-full py-3 rounded-full bg-slate-100 text-slate-900 font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors border border-slate-200"
-                      >
-                        <MessageSquare className="w-4 h-4" />
-                        Text {resource.sms}
-                      </a>
-                    ) : null}
-                  </CardItem>
-                </CardBody>
-              </CardContainer>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {CRISIS_RESOURCES.map((resource) => (
+            <CardContainer key={resource.id} className="w-full">
+              <CardBody className="bg-white relative group/card dark:hover:shadow-2xl dark:hover:shadow-rose-500/[0.1] border-black/[0.1] w-full h-auto rounded-xl p-6 border liquid-glass">
+                <CardItem
+                  translateZ="50"
+                  className="flex items-center gap-3 mb-4 w-full justify-between"
+                >
+                  <h3 className="font-display font-bold text-lg text-slate-900">{resource.title}</h3>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200 uppercase tracking-widest shrink-0">
+                    {resource.badge}
+                  </span>
+                </CardItem>
+                <CardItem
+                  as="p"
+                  translateZ="60"
+                  className="text-sm text-slate-600 mb-6 line-clamp-4"
+                >
+                  {resource.desc}
+                </CardItem>
+                <CardItem
+                  translateZ="80"
+                  className="flex flex-col gap-3 w-full"
+                >
+                  {resource.phone ? (
+                    <a
+                      href={`tel:${resource.phone}`}
+                      className="w-full py-3 rounded-full bg-slate-900 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
+                    >
+                      <PhoneCall className="w-4 h-4" />
+                      Call {resource.phone}
+                    </a>
+                  ) : null}
+                  {resource.sms ? (
+                    <a
+                      href={`sms:${resource.sms}`}
+                      className="w-full py-3 rounded-full bg-slate-100 text-slate-900 font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors border border-slate-200"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      Text {resource.sms}
+                    </a>
+                  ) : null}
+                </CardItem>
+              </CardBody>
+            </CardContainer>
+          ))}
+        </div>
       </div>
 
       {/* Grounding SOS Full Screen Modal */}
